@@ -1,0 +1,37 @@
+{
+    "manifest_version": 3,
+
+    "name": "LocalLens",
+
+    "version": "0.1.0",
+
+    "description": "Privacy-preserving visual perception for browser agents.",
+
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "offscreen"
+    ],
+
+    "content_security_policy": {
+        "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
+    },
+
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "libs/*",
+                "assets/*",
+                "offscreen/*"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ],
+
+    "action": {
+        "default_title": "LocalLens",
+        "default_popup": "popup/popup.html"
+    }
+}

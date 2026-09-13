@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>LocalBank Secure Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #172033;
+        }
+
+        header {
+            background: #102a56;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .secure {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            margin-bottom: 5px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .balance {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .label {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .sensitive {
+            margin-bottom: 18px;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        .transactions {
+            margin-top: 20px;
+        }
+
+        .transaction {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .transaction:last-child {
+            border-bottom: none;
+        }
+
+        .amount {
+            font-weight: bold;
+        }
+
+        .negative {
+            color: #dc2626;
+        }
+
+        button {
+            padding: 11px 18px;
+            border: none;
+            border-radius: 7px;
+            background: #174ea6;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button.secondary {
+            background: #e2e8f0;
+            color: #172033;
+        }
+
+        .card-number {
+            letter-spacing: 2px;
+            font-family: monospace;
+            font-size: 17px;
+        }
+
+        .security {
+            border-left: 4px solid #22c55e;
+            padding-left: 15px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 800px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        LocalBank
+    </div>
+
+    <div class="secure">
+        🔒 Secure Banking Session
+    </div>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="welcome">
+
+        <h1>
+            Welcome back, Arun
+        </h1>
+
+        <p>
+            Here's your account overview.
+        </p>
+
+    </div>
+
+
+    <div class="grid">
+
+
+        <!-- MAIN COLUMN -->
+
+        <div>
+
+
+            <div class="card">
+
+                <div class="label">
+                    Available Balance
+                </div>
+
+                <div class="balance">
+                    ₹84,250.00
+                </div>
+
+                <p>
+                    Savings Account •••• 4821
+                </p>
+
+                <button>
+                    Transfer Money
+                </button>
+
+                <button class="secondary">
+                    View Statement
+                </button>
+
+            </div>
+
+
+            <div class="card transactions">
+
+                <h2>
+                    Recent Transactions
+                </h2>
+
+
+                <div class="transaction">
+
+                    <div>
+                        <strong>Amazon</strong>
+                        <br>
+                        <small>Online Purchase</small>
+                    </div>
+
+                    <div class="amount negative">
+                        - ₹2,499
+                    </div>
+
+                </div>
+
+
+                <div class="transaction">
+
+                    <div>
+                        <strong>Salary</strong>
+                        <br>
+                        <small>Direct Deposit</small>
+                    </div>
+
+                    <div class="amount">
+                        + ₹52,000
+                    </div>
+
+                </div>
+
+
+                <div class="transaction">
+
+                    <div>
+                        <strong>Electricity Bill</strong>
+                        <br>
+                        <small>Automatic Payment</small>
+                    </div>
+
+                    <div class="amount negative">
+                        - ₹1,840
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+
+        <div>
+
+
+            <div class="card">
+
+                <h2>
+                    Personal Information
+                </h2>
+
+
+                <div class="sensitive">
+
+                    <div class="label">
+                        Full Name
+                    </div>
+
+                    <input
+                        type="text"
+                        value="Arun Example"
+                        autocomplete="name"
+                    >
+
+                </div>
+
+
+                <div class="sensitive">
+
+                    <div class="label">
+                        Email
+                    </div>
+
+                    <input
+                        type="email"
+                        value="arun@example.com"
+                    >
+
+                </div>
+
+
+                <div class="sensitive">
+
+                    <div class="label">
+                        Phone
+                    </div>
+
+                    <input
+                        type="tel"
+                        value="+91 98765 43210"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="card" style="margin-top:20px">
+
+                <h2>
+                    Payment Card
+                </h2>
+
+
+                <div class="sensitive">
+
+                    <div class="label">
+                        Card Number
+                    </div>
+
+                    <input
+                        class="card-number"
+                        type="text"
+                        value="4532 1234 5678 9012"
+                        autocomplete="cc-number"
+                    >
+
+                </div>
+
+
+                <div class="sensitive">
+
+                    <div class="label">
+                        CVV
+                    </div>
+
+                    <input
+                        type="password"
+                        value="123"
+                        autocomplete="cc-csc"
+                    >
+
+                </div>
+
+
+                <button>
+                    Update Card
+                </button>
+
+            </div>
+
+
+            <div class="card security">
+
+                <h3>
+                    Security Verification
+                </h3>
+
+                <p>
+                    Enter the OTP sent to your registered phone.
+                </p>
+
+                <input
+                    type="text"
+                    value="482913"
+                    autocomplete="one-time-code"
+                >
+
+                <br><br>
+
+                <button>
+                    Verify OTP
+                </button>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

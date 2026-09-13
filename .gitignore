@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+scratch_chrome_test/
+.venv/
+venv/
+.env

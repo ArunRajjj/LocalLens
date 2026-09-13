@@ -1,0 +1,283 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>LocalLens</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+
+  <body>
+    <h1>LocalLens</h1>
+
+    <p>Privacy Firewall for Browser Agents</p>
+
+    <button id="scanButton">Scan Page</button>
+
+    <div id="status">Status: Ready</div>
+
+    <div id="results">
+      <p>
+        Buttons:
+        <strong id="buttonCount">-</strong>
+      </p>
+
+      <p>
+        Input fields:
+        <strong id="inputCount">-</strong>
+      </p>
+
+      <p>
+        Links:
+        <strong id="linkCount">-</strong>
+      </p>
+
+      <p>
+        Sensitive fields:
+        <strong id="sensitiveCount">-</strong>
+      </p>
+
+      <p>
+        Sensitive text:
+        <strong id="sensitiveTextCount">-</strong>
+      </p>
+
+      <p>
+        Total protected:
+        <strong id="totalProtectedCount">-</strong>
+      </p>
+    </div>
+    <div id="vlmResult">
+      <h3>VLM Analysis</h3>
+      <p id="vlmText">No analysis yet.</p>
+    </div>
+
+    <div id="uiMapSection">
+      <button id="buildUiMapButton" class="primary-map-btn">Build Visual UI Map</button>
+
+      <div id="uiMapResult" style="display: none;">
+        <div class="map-view-header">
+          <h3 id="uiMapSectionTitle">Agent-Ready UI Map</h3>
+          <div class="view-toggle-group">
+            <button id="viewAgentReadyBtn" class="toggle-btn active" type="button">Agent-Ready</button>
+            <button id="viewRawDomBtn" class="toggle-btn" type="button">Raw DOM (Debug)</button>
+          </div>
+        </div>
+
+        <p id="uiMapStatus">Status: Idle</p>
+
+        <!-- Agent-Ready Primary Telemetry -->
+        <div id="agentReadyTelemetry" class="telemetry-bar">
+          <div>Raw: <strong id="telemetryRawCount">-</strong></div>
+          <div>Compressed: <strong id="telemetryCompressedCount">-</strong></div>
+          <div>Ratio: <strong id="telemetryRatio" style="color: #0f766e;">-</strong></div>
+          <div>Interactive: <strong id="telemetryCompInteractive">-</strong></div>
+          <div>Protected: <strong id="telemetryCompProtected" style="color: #dc2626;">-</strong></div>
+          <div>Comp Time: <strong id="telemetryCompTime">-</strong></div>
+        </div>
+
+        <!-- Raw DOM Debug Telemetry (Toggleable) -->
+        <div id="rawDomTelemetry" class="telemetry-bar" style="display: none;">
+          <div>Time: <strong id="uiMapTime">-</strong></div>
+          <div>Visible: <strong id="uiMapVisibleCount">-</strong></div>
+          <div>Interactive: <strong id="uiMapInteractiveCount">-</strong></div>
+          <div>Protected: <strong id="uiMapProtectedCount">-</strong></div>
+        </div>
+
+        <div id="uiMapCanvasContainer" style="margin-top: 10px;">
+          <div class="map-legend">
+            <span class="legend-item"><span class="legend-box blue"></span> Interactive</span>
+            <span class="legend-item"><span class="legend-box purple"></span> Content</span>
+            <span class="legend-item"><span class="legend-box red"></span> Protected</span>
+            <span id="canvasModeBadge" class="mode-badge">Agent-Ready</span>
+          </div>
+          <canvas id="uiMapCanvas" style="display: none;"></canvas>
+        </div>
+
+        <!-- Agent-Ready Compact Table -->
+        <div id="compressedTableContainer" style="margin-top: 10px;">
+          <h4>Agent-Ready Elements (<span id="compressedTableTotal">-</span>)</h4>
+          <div class="table-scroll-wrapper">
+            <table id="compressedTable" class="ui-table">
+              <thead>
+                <tr>
+                  <th style="width: 45px;">ID</th>
+                  <th style="width: 55px;">Role</th>
+                  <th>Text</th>
+                  <th style="width: 75px;">Bounds</th>
+                  <th style="width: 35px;">Prot</th>
+                </tr>
+              </thead>
+              <tbody id="compressedTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Raw DOM Debug Table -->
+        <div id="rawTableContainer" style="margin-top: 10px; display: none;">
+          <h4>Raw Grounded Elements (<span id="uiMapTableTotal">-</span>)</h4>
+          <div class="table-scroll-wrapper">
+            <table id="uiMapTable" class="ui-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px;">ID</th>
+                  <th style="width: 55px;">Role</th>
+                  <th>Text</th>
+                  <th style="width: 80px;">Box [x,y,w,h]</th>
+                  <th style="width: 35px;">Prot</th>
+                </tr>
+              </thead>
+              <tbody id="uiMapTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+
+    <div id="localReasoningSection">
+      <h3>Local Reasoning</h3>
+      <div class="privacy-notice">
+        <span>🔒</span> Protected screenshot sent to local Qwen
+      </div>
+
+      <div class="task-input-group">
+        <label for="userTaskInput">Task:</label>
+        <input
+          id="userTaskInput"
+          type="text"
+          placeholder="e.g. Find the search bar"
+          value="Find the search bar"
+        />
+        <button id="askLocalLensButton" class="primary-reason-btn" type="button">Ask LocalLens</button>
+      </div>
+
+      <div id="reasoningResult" style="display: none;">
+        <p id="reasoningStatus">Status: Idle</p>
+        <div id="reasoningDetails">
+          <p>Model: <strong id="reasoningModel">qwen2.5vl:3b (local)</strong></p>
+          <p>Decision: <strong id="reasoningDecision">-</strong></p>
+          <p>Target: <strong id="reasoningTarget" class="target-highlight-badge">-</strong></p>
+          <p>Reason: <span id="reasoningExplanation">-</span></p>
+          <div class="reasoning-telemetry">
+            <div>Prep: <strong id="telemetryPrepTime">-</strong></div>
+            <div>Qwen Inf: <strong id="telemetryInfTime">-</strong></div>
+            <div>Total: <strong id="telemetryTotalTime">-</strong></div>
+          </div>
+        </div>
+        <p id="reasoningError" style="display: none; color: #dc2626; font-size: 11px; margin-top: 6px;"></p>
+      </div>
+
+      <!-- Action Execution Section (Task -> Ask LocalLens -> Execute) -->
+      <div id="actionExecutionSection" style="display: none; margin-top: 12px; padding: 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;">
+        <h4 style="margin: 0 0 8px 0; font-size: 13px; color: #1e293b; display: flex; align-items: center; justify-content: space-between;">
+          <span>Action Executor</span>
+          <span id="actionTargetBadge" class="target-highlight-badge">-</span>
+        </h4>
+        
+        <div style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center;">
+          <label style="font-size: 11px; font-weight: 600; color: #475569; min-width: 55px;">Target ID:</label>
+          <input
+            id="actionTargetInput"
+            type="text"
+            style="flex: 1; padding: 4px 6px; font-size: 11px; border: 1px solid #cbd5e1; border-radius: 4px; font-family: monospace;"
+            placeholder="e.g. ll-c-1"
+          />
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center;">
+          <label style="font-size: 11px; font-weight: 600; color: #475569; min-width: 55px;">Action:</label>
+          <select id="actionTypeSelect" style="padding: 4px 8px; font-size: 11px; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff;">
+            <option value="click">click</option>
+            <option value="type">type</option>
+          </select>
+        </div>
+
+        <div id="actionTypeInputGroup" style="display: none; margin-bottom: 8px;">
+          <input
+            id="actionTextInput"
+            type="text"
+            placeholder="Text to type..."
+            value="wireless headphones"
+            style="width: 100%; box-sizing: border-box; padding: 6px 8px; font-size: 12px; border: 1px solid #cbd5e1; border-radius: 4px;"
+          />
+        </div>
+
+        <button id="executeActionButton" class="primary-reason-btn" style="width: 100%; background: #059669;" type="button">
+          Execute Action
+        </button>
+
+        <div id="actionResultDisplay" style="display: none; margin-top: 8px; padding: 8px; border-radius: 4px; font-size: 11px; line-height: 1.4;">
+          <div>Status: <strong id="actionResultStatus">-</strong></div>
+          <div>Action: <strong id="actionResultAction">-</strong></div>
+          <div>Target: <code id="actionResultTarget">-</code></div>
+          <div id="actionResultMessage" style="margin-top: 4px;"></div>
+          <div id="actionVerificationRow" style="display: none; margin-top: 6px; padding-top: 6px; border-top: 1px dashed rgba(0,0,0,0.15);">
+            <div>Verification: <strong id="actionVerificationStatus">-</strong> — <span id="actionVerificationMessage"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demo Workflow Section (Autonomous End-to-End Search) -->
+      <div id="demoWorkflowSection" style="margin-top: 14px; padding: 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px;">
+        <h4 style="margin: 0 0 6px 0; font-size: 13px; color: #166534; display: flex; align-items: center; justify-content: space-between;">
+          <span>Demo Workflow (E2E)</span>
+          <span style="font-size: 10px; font-weight: 600; background: #dcfce7; color: #15803d; padding: 2px 6px; border-radius: 4px;">SIH Demo</span>
+        </h4>
+        <p style="margin: 0 0 8px 0; font-size: 11px; color: #166534;">
+          Task: <strong>"Search for wireless headphones"</strong>
+        </p>
+        <button id="runDemoWorkflowButton" class="primary-reason-btn" style="width: 100%; background: #15803d;" type="button">
+          Run Demo Workflow
+        </button>
+
+        <div id="demoWorkflowStatusList" style="display: none; margin-top: 8px; padding: 8px 10px; background: #fff; border: 1px solid #bbf7d0; border-radius: 4px; font-size: 11px; line-height: 1.6; font-family: monospace;">
+          <div id="demoStep1" style="color: #64748b;">○ Privacy scan</div>
+          <div id="demoStep2" style="color: #64748b;">○ Search bar identified</div>
+          <div id="demoStep3" style="color: #64748b;">○ Typed "wireless headphones"</div>
+          <div id="demoStep4" style="color: #64748b;">○ Type verified</div>
+          <div id="demoStep5" style="color: #64748b;">○ Search/submit identified</div>
+          <div id="demoStep6" style="color: #64748b;">○ Search clicked</div>
+          <div id="demoStep7" style="color: #64748b;">○ Page change verified</div>
+          <div id="demoWorkflowSummary" style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #cbd5e1; font-weight: bold; display: none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="webgpuSection">
+      <button id="testWebGpuButton">Test WebGPU Vision</button>
+      <div id="webgpuResult">
+        <h3>WebGPU Vision (Classification)</h3>
+        <p id="webgpuStatus">Status: Idle</p>
+        <div id="webgpuDetails" style="display: none;">
+          <p>Device: <strong id="webgpuDevice">-</strong></p>
+          <p>Model: <strong id="webgpuModel">-</strong></p>
+          <p>Inference: <strong id="webgpuTime">-</strong></p>
+          <p>Top prediction: <strong id="webgpuPrediction">-</strong></p>
+        </div>
+        <p id="webgpuError" style="display: none; color: #dc2626;"></p>
+      </div>
+
+      <div class="detector-button-group">
+        <button id="analyzeProtectedPageButton" class="primary-detector-btn">Analyze Protected Page</button>
+        <button id="testDetectorButton" class="secondary-detector-btn">Test WebGPU Object Detection (test.png)</button>
+      </div>
+
+      <div id="detectorResult">
+        <h3>WebGPU Object Detection (Localization)</h3>
+        <p id="detectorStatus">Status: Idle</p>
+        <div id="detectorDetails" style="display: none;">
+          <p>Image: <strong id="detectorTargetBadge" class="target-badge">-</strong></p>
+          <p>Device: <strong id="detectorDevice">-</strong></p>
+          <p>Model: <strong id="detectorModel">-</strong></p>
+          <p>Inference: <strong id="detectorTime">-</strong></p>
+          <p>Detections found: <strong id="detectorCount">-</strong></p>
+          <div id="detectorList"></div>
+          <div id="canvasContainer" style="margin-top: 10px;">
+            <div id="canvasCaption" style="font-size: 11px; font-weight: bold; color: #15803d; margin-bottom: 4px;">Protected Screenshot — analyzed locally</div>
+            <canvas id="detectionCanvas" style="display: none;"></canvas>
+          </div>
+        </div>
+        <p id="detectorError" style="display: none; color: #dc2626;"></p>
+      </div>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>
