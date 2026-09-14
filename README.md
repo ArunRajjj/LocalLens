@@ -4,7 +4,7 @@ LocalLens is a privacy-preserving visual perception layer for browser AI agents.
 
 ---
 
-## Architecture
+# Architecture
 
 LocalLens operates on a five-stage pipeline:
 
@@ -20,7 +20,7 @@ OBSERVE → PROTECT → REASON → ACT → VERIFY
 
 ---
 
-## Project Structure
+# Project Structure
 
 ```text
 LocalLens/
@@ -42,7 +42,7 @@ LocalLens/
 
 ---
 
-## System Requirements
+# System Requirements
 
 - **Operating System**: Windows or Linux
 - **Python**: Python 3.10+ recommended
@@ -53,39 +53,39 @@ LocalLens/
 
 ---
 
-## Setup from a Fresh Clone
+# Setup from a Fresh Clone
 
-### 1. Clone the Repository
+## 1. Clone the Repository
 ```bash
 git clone https://github.com/your-repo/LocalLens.git
 cd LocalLens
 ```
 
-### 2. Install Python Dependencies
+## 2. Install Python Dependencies
 ```bash
 pip install fastapi uvicorn python-multipart ollama
 ```
 
-### 3. Pull the Vision Model with Ollama
+## 3. Pull the Vision Model with Ollama
 Make sure Ollama is installed and running, then pull the model:
 ```bash
 ollama pull qwen2.5vl:3b
 ```
 
-### 4. Start Ollama
+## 4. Start Ollama
 Ensure the Ollama service is active (either via the Ollama desktop app or terminal):
 ```bash
 ollama serve
 ```
 
-### 5. Start the FastAPI Backend
+## 5. Start the FastAPI Backend
 Run the backend server from the project root:
 ```bash
 uvicorn Backend.main:app --reload --port 8000
 ```
 The reasoning engine will now be listening on `http://127.0.0.1:8000`.
 
-### 6. Load the Chrome Extension
+## 6. Load the Chrome Extension
 1. Open Google Chrome and navigate to `chrome://extensions`.
 2. Enable **Developer mode** using the toggle in the top-right corner.
 3. Click **Load unpacked**.
@@ -93,7 +93,7 @@ The reasoning engine will now be listening on `http://127.0.0.1:8000`.
 
 ---
 
-## Running the Demo Workflow
+# Running the Demo Workflow
 
 1. Open Google Chrome and navigate to a shopping page (e.g., [Amazon](https://www.amazon.com)).
 2. Click the **LocalLens** extension icon in the Chrome toolbar to open the popup.
@@ -110,7 +110,7 @@ The reasoning engine will now be listening on `http://127.0.0.1:8000`.
 
 ---
 
-## Testing Privacy Redaction
+# Testing Privacy Redaction
 
 To test the privacy firewall on sensitive data without visiting external sites:
 1. Open [`test-pages/banking.html`](test-pages/banking.html) in Chrome.
@@ -120,13 +120,13 @@ To test the privacy firewall on sensitive data without visiting external sites:
 
 ---
 
-## Local Reasoning
+# Local Reasoning
 
 All visual reasoning is executed **100% locally**. The Chrome extension communicates with the local FastAPI backend (`http://127.0.0.1:8000/reason`), which queries the local Ollama instance running `qwen2.5vl:3b`. No screenshots, DOM content, or prompts are sent to external cloud APIs.
 
 ---
 
-## Current Limitations
+# Current Limitations
 
 - **DOM-Based Privacy Detection**: Sensitive field detection is currently heuristic and DOM-attribute driven (identifying password fields, financial patterns, autocomplete tags, and specific selectors).
 - **Supported Actions**: The action executor currently supports `click` and `type` actions.
