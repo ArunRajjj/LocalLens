@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NovaMart — Modern Online Store</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      line-height: 1.5;
+    }
+
+    /* Header */
+    header {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #38bdf8;
+    }
+    nav {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+    nav a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    nav a:hover {
+      color: #ffffff;
+    }
+    .account-badge-btn {
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 6px 12px;
+      border-radius: 6px;
+      color: #f8fafc;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+    .account-badge-btn:hover {
+      background: #334155;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1120px;
+      margin: 24px auto;
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Search Section */
+    .search-card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .search-form {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .search-input {
+      flex: 1;
+      padding: 10px 14px;
+      font-size: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .search-input:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2);
+    }
+    .search-btn {
+      background: #0284c7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .search-btn:hover {
+      background: #0369a1;
+    }
+    .search-results-box {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed #e2e8f0;
+    }
+
+    /* Grid Layout for Products and Profile */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+
+    /* Product Section */
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: #0f172a;
+    }
+    .product-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .product-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .product-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    .product-desc {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.4;
+    }
+    .product-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: #059669;
+    }
+    .product-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-cart {
+      flex: 1;
+      background: #0f172a;
+      color: #ffffff;
+      border: none;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn-cart:hover {
+      background: #334155;
+    }
+    .btn-view {
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn-reviews {
+      background: #f8fafc;
+      color: #0284c7;
+      border: 1px solid #bae6fd;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+    .btn-reviews:hover {
+      background: #e0f2fe;
+    }
+
+    /* Customer Profile / PII Section */
+    .profile-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .pii-greeting {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0369a1;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .field-group {
+      margin-bottom: 12px;
+    }
+    .field-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .field-input {
+      width: 100%;
+      padding: 7px 10px;
+      font-size: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      outline: none;
+    }
+    textarea.field-input {
+      resize: vertical;
+      min-height: 48px;
+    }
+    .static-pii-text {
+      font-size: 12px;
+      color: #334155;
+      background: #f8fafc;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 1px solid #f1f5f9;
+      margin-top: 4px;
+    }
+
+    /* Order Notes (Contenteditable) */
+    .notes-box {
+      border: 1px dashed #cbd5e1;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 12px;
+      min-height: 40px;
+      background: #fafafa;
+      outline: none;
+    }
+    .notes-box:focus {
+      border-color: #0284c7;
+      background: #ffffff;
+    }
+
+    /* Footer */
+    footer {
+      max-width: 1120px;
+      margin: 20px auto 40px auto;
+      padding: 16px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #64748b;
+    }
+    footer a {
+      color: #0284c7;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Header with Site/Logo, Normal Links, and Account role="button" -->
+  <header>
+    <div class="logo">NovaMart</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#deals">Today's Deals</a>
+      <a href="#categories">Categories</a>
+      <a href="#support">Customer Support</a>
+      <!-- Required element: role="button" -->
+      <a id="nav-account-link" class="account-badge-btn" href="#account" role="button">
+        <span>Account & Lists</span>
+      </a>
+      <!-- Shopping Cart Indicator -->
+      <a id="nav-cart-link" class="account-badge-btn" href="#cart" role="button" aria-label="Shopping Cart">
+        <span>🛒 Cart (<strong id="cart-counter">0</strong>)</span>
+      </a>
+    </nav>
+  </header>
+
+  <div class="container">
+
+    <!-- 2. Search Section: <input type="search"> with placeholder "Search products" & normal <button> -->
+    <section class="search-card" id="search-section-wrapper">
+      <h2 style="font-size: 15px; margin-bottom: 10px; color: #1e293b;">Find Products</h2>
+      <div class="search-form">
+        <input
+          id="product-search-bar"
+          class="search-input"
+          type="search"
+          placeholder="Search products"
+          autocomplete="off"
+        />
+        <button
+          id="search-submit-btn"
+          class="search-btn"
+          type="button"
+          aria-expanded="false"
+        >
+          Search
+        </button>
+      </div>
+
+      <!-- Required element: dynamically updated section -->
+      <div id="search-results-area" class="search-results-box" style="display: none;"></div>
+    </section>
+
+    <!-- 3. Main Content: Products & Personal Information -->
+    <div class="content-grid">
+
+      <!-- Product / Content Area -->
+      <section>
+        <h2 class="section-title">Featured Electronics</h2>
+
+        <!-- Cart Status Notification Banner -->
+        <div id="cart-notification-banner" style="display: none; margin-bottom: 15px; padding: 10px 14px; background: #ecfdf5; border: 1px solid #10b981; border-radius: 6px; color: #065f46; font-size: 13px;">
+          <span style="font-weight: 700; color: #047857;">✓</span> <span id="cart-notification-text"></span>
+        </div>
+
+        <div class="product-list">
+
+          <!-- Product Card 1 -->
+          <div class="product-card" data-product-id="prod-1">
+            <div>
+              <h3 class="product-title">Sony WH-1000XM4 Wireless Noise-Cancelling Headphones</h3>
+              <div class="product-rating" style="font-size: 11px; color: #d97706; margin: 2px 0 4px 0;">★ 4.8 (14,200 ratings)</div>
+              <p class="product-desc">Industry-leading active noise cancelling with dual noise sensor technology, 30hr battery, and touch controls.</p>
+            </div>
+            <div>
+              <div class="product-price">$248.00</div>
+              <div class="product-actions" style="margin-top: 8px;">
+                <button class="btn-cart" type="button">Add to Cart</button>
+                <button class="btn-view" type="button">View Product</button>
+                <button class="btn-reviews" type="button" aria-expanded="false">Customer Reviews</button>
+              </div>
+            </div>
+            <div class="product-reviews-drawer" id="reviews-prod-1" style="display: none; margin-top: 10px; padding: 10px; background: #f8fafc; border-top: 1px solid #e2e8f0; border-radius: 4px;">
+              <h4 style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px;">Customer Reviews &amp; Ratings</h4>
+              <div class="customer-review" style="margin-bottom: 8px; font-size: 11px;">
+                <div style="color: #d97706; font-weight: 600;">★ 5.0 — Outstanding noise cancellation and battery</div>
+                <p style="color: #475569; margin-top: 2px;">The noise cancellation easily blocks airplane cabin hum and subway noise. Battery life lasts me 3 full days of heavy listening.</p>
+              </div>
+              <div class="customer-review" style="margin-bottom: 8px; font-size: 11px;">
+                <div style="color: #d97706; font-weight: 600;">★ 4.0 — Superb audio, but microphone could be clearer</div>
+                <p style="color: #475569; margin-top: 2px;">Soundstage and bass are crisp and deep. My only gripe is that the mic picks up background wind during outdoor phone calls.</p>
+              </div>
+              <div class="customer-review" style="margin-bottom: 8px; font-size: 11px;">
+                <div style="color: #d97706; font-weight: 600;">★ 5.0 — Unmatched comfort for long work days</div>
+                <p style="color: #475569; margin-top: 2px;">Plush ear cups do not cause fatigue even after 8 hours of conference calls. Multipoint Bluetooth switching is seamless.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 2 -->
+          <div class="product-card" data-product-id="prod-2">
+            <div>
+              <h3 class="product-title">Soundcore by Anker Life Q30 Wireless ANC Headphones</h3>
+              <div class="product-rating" style="font-size: 11px; color: #d97706; margin: 2px 0 4px 0;">★ 4.5 (8,350 ratings)</div>
+              <p class="product-desc">Hybrid active noise cancellation, custom sound EQ app, Hi-Res audio certification, and 40hr playtime.</p>
+            </div>
+            <div>
+              <div class="product-price">$79.99</div>
+              <div class="product-actions" style="margin-top: 8px;">
+                <button class="btn-cart" type="button">Add to Cart</button>
+                <button class="btn-view" type="button">View Product</button>
+                <button class="btn-reviews" type="button" aria-expanded="false">Customer Reviews</button>
+              </div>
+            </div>
+            <div class="product-reviews-drawer" id="reviews-prod-2" style="display: none; margin-top: 10px; padding: 10px; background: #f8fafc; border-top: 1px solid #e2e8f0; border-radius: 4px;">
+              <h4 style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px;">Customer Reviews &amp; Ratings</h4>
+              <div class="customer-review" style="margin-bottom: 8px; font-size: 11px;">
+                <div style="color: #d97706; font-weight: 600;">★ 5.0 — Best value ANC headphones under $100</div>
+                <p style="color: #475569; margin-top: 2px;">Incredible value for the price. The companion app EQ makes a massive difference in audio tuning, and 40-hour battery is unbeatable.</p>
+              </div>
+              <div class="customer-review" style="margin-bottom: 8px; font-size: 11px;">
+                <div style="color: #d97706; font-weight: 600;">★ 4.0 — Great sound, but headband feels a bit bulky</div>
+                <p style="color: #475569; margin-top: 2px;">Noise cancelling is very solid for daily train commutes. Headset is slightly bulky on smaller heads, but build quality feels sturdy.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 3 -->
+          <div class="product-card" data-product-id="prod-3">
+            <div>
+              <h3 class="product-title">boAt Rockerz 450 Bluetooth On-Ear Headphones</h3>
+              <div class="product-rating" style="font-size: 11px; color: #d97706; margin: 2px 0 4px 0;">★ 4.2 (21,500 ratings)</div>
+              <p class="product-desc">Lightweight wireless headphones with 40mm dynamic drivers, padded ear cushions, and 15hr playback.</p>
+            </div>
+            <div>
+              <div class="product-price">$39.99</div>
+              <div class="product-actions" style="margin-top: 8px;">
+                <button class="btn-cart" type="button">Add to Cart</button>
+                <button class="btn-view" type="button">View Product</button>
+                <button class="btn-reviews" type="button" aria-expanded="false">Customer Reviews</button>
+              </div>
+            </div>
+            <div class="product-reviews-drawer" id="reviews-prod-3" style="display: none; margin-top: 10px; padding: 10px; background: #f8fafc; border-top: 1px solid #e2e8f0; border-radius: 4px;">
+              <h4 style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px;">Customer Reviews &amp; Ratings</h4>
+              <div class="customer-review" style="margin-bottom: 8px; font-size: 11px;">
+                <div style="color: #d97706; font-weight: 600;">★ 4.0 — Super budget friendly with punchy bass</div>
+                <p style="color: #475569; margin-top: 2px;">Punchy bass and very lightweight to carry around. On-ear fit can feel tight after 2 hours, but perfect gym headphones for the price.</p>
+              </div>
+              <div class="customer-review" style="margin-bottom: 8px; font-size: 11px;">
+                <div style="color: #d97706; font-weight: 600;">★ 4.0 — Good customer service support</div>
+                <p style="color: #475569; margin-top: 2px;">I had an issue with the charging cable, but customer service reached me at support.agent@boat-audio.com and 555-019-2831 to send a free replacement.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 4 -->
+          <div class="product-card" data-product-id="prod-4">
+            <div>
+              <h3 class="product-title">Bose QuietComfort 45 Bluetooth Wireless Headphones</h3>
+              <div class="product-rating" style="font-size: 11px; color: #d97706; margin: 2px 0 4px 0;">★ 4.7 (9,120 ratings)</div>
+              <p class="product-desc">Iconic acoustic noise cancelling, Quiet and Aware modes, lightweight comfort materials, and clear calls.</p>
+            </div>
+            <div>
+              <div class="product-price">$279.00</div>
+              <div class="product-actions" style="margin-top: 8px;">
+                <button class="btn-cart" type="button">Add to Cart</button>
+                <button class="btn-view" type="button">View Product</button>
+                <button class="btn-reviews" type="button" aria-expanded="false">Customer Reviews</button>
+              </div>
+            </div>
+            <div class="product-reviews-drawer" id="reviews-prod-4" style="display: none; margin-top: 10px; padding: 10px; background: #f8fafc; border-top: 1px solid #e2e8f0; border-radius: 4px;">
+              <h4 style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px;">Customer Reviews &amp; Ratings</h4>
+              <div class="customer-review" style="margin-bottom: 8px; font-size: 11px;">
+                <div style="color: #d97706; font-weight: 600;">★ 5.0 — Legendary Bose comfort and supreme silence</div>
+                <p style="color: #475569; margin-top: 2px;">Light as a feather on your head. The Quiet mode silences noisy office chatter instantly. Physical buttons are much easier to use than touch sliders.</p>
+              </div>
+              <div class="customer-review" style="margin-bottom: 8px; font-size: 11px;">
+                <div style="color: #d97706; font-weight: 600;">★ 4.0 — High price tag but premium reliability</div>
+                <p style="color: #475569; margin-top: 2px;">Premium sound balance and very crisp voice calls. Wish the battery lasted as long as Sony, but 24 hours is plenty for most trips.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Required element: contenteditable element -->
+        <div style="margin-top: 20px;">
+          <label class="field-label" for="order-special-instructions">Order Delivery Instructions (Editable):</label>
+          <div
+            id="order-special-instructions"
+            class="notes-box"
+            contenteditable="true"
+            role="textbox"
+            aria-label="Order instructions"
+          >
+            Please leave the package at the doorstep behind the planter box.
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Personal Information Section (PII fields and texts detectable by LocalLens) -->
+      <aside class="profile-card">
+        <h2 style="font-size: 15px; margin-bottom: 6px; color: #0f172a;">Customer Profile</h2>
+        <div class="pii-greeting">Welcome back, Arun</div>
+
+        <!-- Full Name -->
+        <div class="field-group">
+          <label class="field-label" for="customer-name-input">Full Name</label>
+          <input
+            id="customer-name-input"
+            class="field-input"
+            type="text"
+            name="customer_name"
+            placeholder="Full Name"
+            value="Arun Example"
+            autocomplete="name"
+          />
+          <div class="static-pii-text">Name: Arun Example</div>
+        </div>
+
+        <!-- Email Address -->
+        <div class="field-group">
+          <label class="field-label" for="customer-email-input">Email Address</label>
+          <input
+            id="customer-email-input"
+            class="field-input"
+            type="email"
+            placeholder="Email Address"
+            value="arun@example.com"
+            autocomplete="email"
+          />
+          <div class="static-pii-text">Email: arun@example.com</div>
+        </div>
+
+        <!-- Contact Phone -->
+        <div class="field-group">
+          <label class="field-label" for="customer-phone-input">Contact Phone</label>
+          <input
+            id="customer-phone-input"
+            class="field-input"
+            type="tel"
+            placeholder="Mobile Number"
+            value="+91 98765 43210"
+            autocomplete="tel"
+          />
+          <div class="static-pii-text">Contact: +91 98765 43210</div>
+        </div>
+
+        <!-- Delivery Address -->
+        <div class="field-group">
+          <label class="field-label" for="customer-address-input">Delivery Address</label>
+          <textarea
+            id="customer-address-input"
+            class="field-input"
+            name="delivery_address"
+            placeholder="Delivery Address"
+            autocomplete="street-address"
+          >Flat 302, Palm Heights, Lucknow 226020</textarea>
+          <div class="static-pii-text">Deliver to Rishi Lucknow 226020</div>
+        </div>
+
+        <!-- PIN / ZIP -->
+        <div class="field-group">
+          <label class="field-label" for="customer-pin-input">PIN / Postal Code</label>
+          <input
+            id="customer-pin-input"
+            class="field-input"
+            type="text"
+            name="pincode"
+            placeholder="PIN Code"
+            value="226020"
+            autocomplete="postal-code"
+          />
+          <div class="static-pii-text">PIN Code: 226020</div>
+        </div>
+
+        <!-- Bank Account -->
+        <div class="field-group">
+          <label class="field-label" for="customer-bank-account">Bank Account</label>
+          <input
+            id="customer-bank-account"
+            class="field-input"
+            type="text"
+            name="account_number"
+            placeholder="Bank Account Number"
+            value="987654321012"
+          />
+          <div class="static-pii-text">Savings Account •••• 4821</div>
+        </div>
+
+        <!-- Payment Card -->
+        <div class="field-group">
+          <label class="field-label" for="customer-card-input">Payment Card</label>
+          <input
+            id="customer-card-input"
+            class="field-input"
+            type="text"
+            name="cardnumber"
+            placeholder="Card Number"
+            value="4532 1234 5678 9012"
+            autocomplete="cc-number"
+          />
+        </div>
+
+        <!-- CVV -->
+        <div class="field-group">
+          <label class="field-label" for="customer-cvv-input">CVV</label>
+          <input
+            id="customer-cvv-input"
+            class="field-input"
+            type="password"
+            name="cvv"
+            placeholder="CVV"
+            value="892"
+            autocomplete="cc-csc"
+          />
+        </div>
+
+        <!-- OTP -->
+        <div class="field-group">
+          <label class="field-label" for="customer-otp-input">Security OTP</label>
+          <input
+            id="customer-otp-input"
+            class="field-input"
+            type="text"
+            name="otp"
+            placeholder="Enter OTP"
+            value="482913"
+            autocomplete="one-time-code"
+          />
+          <div class="static-pii-text">Enter the OTP sent to your registered phone: 482913</div>
+        </div>
+      </aside>
+
+    </div>
+
+  </div>
+
+  <!-- 5. Footer with required normal link -->
+  <footer>
+    <div>&copy; 2026 NovaMart Inc. All rights reserved.</div>
+    <div>
+      <a id="footer-privacy-link" href="#privacy">Privacy Notice</a> &bull;
+      <a id="footer-terms-link" href="#terms">Terms of Service</a>
+    </div>
+  </footer>
+
+  <!-- 6. Search interaction: dynamically updates the results section on click -->
+  <script>
+    const searchInput = document.getElementById("product-search-bar");
+    const searchSubmitBtn = document.getElementById("search-submit-btn");
+    const searchResultsArea = document.getElementById("search-results-area");
+
+    searchSubmitBtn.addEventListener("click", () => {
+      const query = (searchInput.value || "").trim();
+      searchSubmitBtn.setAttribute("aria-expanded", "true");
+
+      if (query) {
+        searchResultsArea.style.display = "block";
+        searchResultsArea.innerHTML = `
+          <div id="search-status-banner" style="padding: 12px 14px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 6px;">
+            <div style="font-weight: 700; color: #166534; font-size: 14px;">
+              ✓ Search Results for: "<span id="display-query-text">${query}</span>"
+            </div>
+            <p style="font-size: 12px; color: #15803d; margin: 4px 0 8px 0;">
+              Showing 2 matching verified items found in stock:
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div style="font-size: 12px; background: #ffffff; padding: 6px 10px; border: 1px solid #bbf7d0; border-radius: 4px; display: flex; justify-content: space-between;">
+                <strong>${query} Pro Active Noise Cancelling</strong>
+                <span style="color: #059669; font-weight: 600;">$99.00</span>
+              </div>
+              <div style="font-size: 12px; background: #ffffff; padding: 6px 10px; border: 1px solid #bbf7d0; border-radius: 4px; display: flex; justify-content: space-between;">
+                <strong>${query} Sport Wireless Earbuds</strong>
+                <span style="color: #059669; font-weight: 600;">$59.00</span>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        searchResultsArea.style.display = "block";
+        searchResultsArea.innerHTML = `
+          <div style="padding: 10px 14px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; color: #991b1b; font-size: 13px;">
+            Please enter search keywords to browse our catalog.
+          </div>
+        `;
+      }
+    });
+
+    // Cart interaction logic
+    let cartCount = 0;
+    const cartCounterEl = document.getElementById("cart-counter");
+    const cartBanner = document.getElementById("cart-notification-banner");
+    const cartBannerText = document.getElementById("cart-notification-text");
+
+    document.querySelectorAll(".btn-cart").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        cartCount++;
+        if (cartCounterEl) cartCounterEl.textContent = String(cartCount);
+
+        const card = btn.closest(".product-card") || btn.parentElement;
+        const titleEl = card ? card.querySelector(".product-title") : null;
+        const prodName = titleEl ? titleEl.textContent.trim() : "Product";
+
+        btn.textContent = "✓ Added to Cart";
+        btn.style.background = "#15803d";
+        btn.setAttribute("aria-label", `Added ${prodName} to Cart`);
+
+        if (cartBanner && cartBannerText) {
+          cartBanner.style.display = "block";
+          cartBannerText.textContent = `Cart updated — ${prodName} added successfully.`;
+        }
+      });
+    });
+
+    // Review drawer toggle logic
+    document.querySelectorAll(".btn-reviews, .btn-view").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const card = btn.closest(".product-card");
+        const drawer = card ? card.querySelector(".product-reviews-drawer") : null;
+        if (drawer) {
+          const isHidden = window.getComputedStyle(drawer).display === "none";
+          drawer.style.display = isHidden ? "block" : "none";
+          btn.setAttribute("aria-expanded", isHidden ? "true" : "false");
+        }
+      });
+    });
+  </script>
+</body>
+</html>

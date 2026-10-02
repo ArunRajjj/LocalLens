@@ -10,7 +10,8 @@
     "permissions": [
         "activeTab",
         "scripting",
-        "offscreen"
+        "offscreen",
+        "storage"
     ],
 
     "content_security_policy": {
